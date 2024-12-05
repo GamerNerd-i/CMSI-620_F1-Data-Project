@@ -22,20 +22,22 @@
 -- Creating tables
 CREATE TABLE constructor_performance (
 	constructorResultsId serial,
-	raceId smallint,
+	raceId smallint ,
 	constructorId smallint,
 	points numeric,
-	status varchar
+	status varchar,
+    PRIMARY KEY (constructorResultsId)
 );
 
-CREATE TABLE constructor_rankings (
+CREATE TABLE constructor_rankings (source
 	constructorStandingsId serial,
 	raceId smallint,
 	constructorId smallint,
 	points numeric,
 	position smallint,
 	positionText varchar,
-	wins smallint
+	wins smallint,
+    PRIMARY KEY (constructorStandingsId)
 );
 
 CREATE TABLE driver_details (
@@ -47,7 +49,8 @@ CREATE TABLE driver_details (
 	surname varchar,
 	dob date,
 	nationality varchar,
-	url varchar
+	url varchar,
+    PRIMARY KEY (driverId)
 );
 
 CREATE TABLE driver_rankings (
@@ -57,7 +60,8 @@ CREATE TABLE driver_rankings (
 	points numeric,
 	position smallint,
 	positionText varchar,
-	wins smallint
+	wins smallint,
+    PRIMARY KEY (driverStandingsId)
 );
 
 CREATE TABLE lap_timings (
@@ -66,7 +70,8 @@ CREATE TABLE lap_timings (
 	lap smallint,
 	position smallint,
 	time interval,
-	milliseconds integer
+	milliseconds integer,
+    PRIMARY KEY (raceId, driverId)
 );
 
 CREATE TABLE pit_stop_records (
@@ -76,7 +81,8 @@ CREATE TABLE pit_stop_records (
 	lap smallint,
 	time interval,
 	duration interval,
-	milliseconds integer
+	milliseconds integer,
+    PRIMARY KEY (raceId, driverId)
 );
 
 CREATE TABLE qualifying_results (
@@ -88,7 +94,8 @@ CREATE TABLE qualifying_results (
 	position smallint,
 	q1 interval,
 	q2 interval,
-	q3 interval
+	q3 interval,
+    PRIMARY KEY (qualifyId)
 );
 
 CREATE TABLE race_results (
@@ -109,7 +116,7 @@ CREATE TABLE race_results (
 	rank smallint,
 	fastestLapTime interval,
 	fastestLapSpeed interval,
-	statusId smallint
+	statusId smallint,
 );
 
 CREATE TABLE race_schedule (
