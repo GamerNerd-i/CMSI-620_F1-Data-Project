@@ -117,6 +117,7 @@ CREATE TABLE race_results (
 	fastestLapTime interval,
 	fastestLapSpeed interval,
 	statusId smallint,
+    PRIMARY KEY (resultId)
 );
 
 CREATE TABLE race_schedule (
@@ -137,17 +138,20 @@ CREATE TABLE race_schedule (
 	quali_date date,
 	quali_time interval,
 	sprint_date date,
-	sprint_time interval
+	sprint_time interval,
+    PRIMARY KEY (raceId)
 );
 
 CREATE TABLE race_status (
-	statusID serial,
-	status varchar
+	statusId serial,
+	status varchar,
+    PRIMARY KEY (statusId)
 );
 
 CREATE TABLE season_summaries (
 	year smallint,
-	url varchar
+	url varchar,
+    PRIMARY KEY (year)
 );
 
 CREATE TABLE sprint_race_results (
@@ -166,7 +170,8 @@ CREATE TABLE sprint_race_results (
 	milliseconds integer,
 	fastestLap smallint,
 	fastestLapTime interval,
-	statusId smallint
+	statusId smallint,
+    PRIMARY KEY (resultId)
 );
 
 CREATE TABLE team_details (
@@ -174,7 +179,8 @@ CREATE TABLE team_details (
 	constructorRef varchar,
 	name varchar,
 	nationality varchar,
-	url varchar
+	url varchar,
+    PRIMARY KEY (constructorId)
 );
 
 CREATE TABLE track_information (
@@ -187,6 +193,7 @@ CREATE TABLE track_information (
 	lng numeric,
 	alt smallint,
 	url varchar
+    PRIMARY KEY (circuitId)
 );
 
 -- Importing tables: failed due to permissions
