@@ -30,7 +30,7 @@ connection.commit()
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
-    "/Users/aidan/Desktop/LMU/CS/Actual-Coursework/Grad_2024-2025/CMSI-620_Database-Systems/CMSI-620_F1-Data-Project/2NF+Merged/SQLite/column-renaming.sql",
+    "/Users/aidan/Desktop/LMU/CS/Actual-Coursework/Grad_2024-2025/CMSI-620_Database-Systems/CMSI-620_F1-Data-Project/2NF+Merged/SQL-Scripts/column-renaming.sql",
     "r",
 ) as sql_file:
     renaming = sql_file.read()
