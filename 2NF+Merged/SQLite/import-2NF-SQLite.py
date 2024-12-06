@@ -26,7 +26,7 @@ for file in files:
         file.lower(), connection, if_exists="replace", index=False
     )
 
-connection.commit()
+    connection.commit()
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
