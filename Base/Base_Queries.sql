@@ -1,3 +1,5 @@
+-- BASIC QUERIES
+
 -- Which F1 driver has the most first-place races?
 SELECT driver_details.forename || ' ' || driver_details.surname as driverName, COUNT(driver_rankings.position) as first_places
 FROM driver_rankings 
@@ -15,6 +17,17 @@ WHERE position <= 3
 GROUP BY driver_rankings.driverId
 ORDER BY COUNT(driver_rankings.position) DESC
 LIMIT 1;
+
+-- Which circuit has held the most races?
+select ti.name, count(circuitId) as num_of_races from track_information as ti
+join race_schedule using(circuitId)
+group by ti.name
+order by num_of_races desc;
+
+-- How many drivers are named Andrew?
+select count(*) from driver_details where forename = 'Jim';
+
+-- ADVANCED QUERIES
 
 -- What's the fastest lap time of each driver?
 SELECT driver_details.forename || ' ' || driver_details.surname as driverName, lap_timings.time
@@ -41,3 +54,13 @@ FROM most_common_team
 LEFT JOIN driver_details ON driver_details.driverId = most_common_team.driverId
 LEFT JOIN team_details ON team_details.constructorId = most_common_team.constructorId;
 DROP TABLE most_common_team;
+
+-- On which circuit have the most fatalities occurred during a race?
+select ti.name, ti.location, ti.country, count(rr.statusId) as fatalities
+from track_information as ti
+join race_schedule as rs using(circuitId)
+join race_results as rr on rs.raceId = rr.raceId
+join race_status as rst on rr.statusId = rst.statusId 
+where rst.statusId = 104
+group by ti.name, ti.location, ti.country
+order by fatalities desc;
