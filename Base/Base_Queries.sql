@@ -36,3 +36,8 @@ FROM (
     GROUP BY driverId, constructorId
 ) ranked_teams
 WHERE rank = 1;
+SELECT driver_details.forename || ' ' || driver_details.surname as driverName, team_details.name as teamName
+FROM most_common_team
+LEFT JOIN driver_details ON driver_details.driverId = most_common_team.driverId
+LEFT JOIN team_details ON team_details.constructorId = most_common_team.constructorId;
+DROP TABLE most_common_team;
