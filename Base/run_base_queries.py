@@ -16,11 +16,11 @@ query_times = {}
 
 for query in queries.split("\n\n"):
     start_time = time.time()
-    cursor.execute(query)
+    cursor.executescript(query)
     # print(cursor.fetchall())
     end_time = time.time()
 
-    query_times[query[: query.find("\n")]] = end_time - start_time
+    query_times[query[: query.find("\n")]] = (end_time - start_time) * 1000
 
 connection.close()
 
