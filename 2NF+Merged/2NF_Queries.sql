@@ -1,40 +1,41 @@
 -- BASIC QUERIES
 
--- Which F1 driver has the most first-place races?
-SELECT driver_details.forename || ' ' || driver_details.surname as driverName, COUNT(driver_rankings.position) as first_places
+-- Which F1 driver has the most first-place finishes?
+SELECT driver_details.forename || ' ' || driver_details.surname as driver_name, COUNT(driver_rankings.position) as first_places
 FROM driver_rankings 
 LEFT JOIN driver_details ON driver_details.driverId = driver_rankings.driverId 
 WHERE position = 1 
 GROUP BY driver_rankings.driverId
-ORDER BY COUNT(driver_rankings.position) DESC
+ORDER BY first_places DESC
 LIMIT 1;
 
 -- Which F1 driver has the most podiums (1st, 2nd, 3rd)?
-SELECT driver_details.forename || ' ' || driver_details.surname as driverName, COUNT(driver_rankings.position) as first_places
+SELECT driver_details.forename || ' ' || driver_details.surname as driver_name, COUNT(driver_rankings.position) as podiums
 FROM driver_rankings 
 LEFT JOIN driver_details ON driver_details.driverId = driver_rankings.driverId 
 WHERE position <= 3
 GROUP BY driver_rankings.driverId
-ORDER BY COUNT(driver_rankings.position) DESC
+ORDER BY podiums DESC
 LIMIT 1;
 
 -- Which circuit has held the most races?
-select ti.name, count(circuitId) as num_of_races from track_information as ti
+select c.name, count(circuitId) as num_of_races 
+from circuits as c
 join race_schedule using(circuitId)
-group by ti.name
+group by c.name
 order by num_of_races desc;
 
 -- How many drivers are named Andrew?
-select count(*) from driver_details where forename = 'Jim';
+select count(*) from driver_details where forename = 'Andrew';
 
 -- ADVANCED QUERIES
 
 -- What's the fastest lap time of each driver?
-SELECT driver_details.forename || ' ' || driver_details.surname as driverName, lap_timings.time
-FROM lap_timings 
-LEFT JOIN driver_details ON driver_details.driverId = lap_timings.driverId 
-GROUP BY lap_timings.driverId
-ORDER BY MIN(lap_timings.milliseconds) ASC;
+SELECT driver_details.forename || ' ' || driver_details.surname as driver_name, lap_times.time
+FROM lap_times
+LEFT JOIN driver_details ON driver_details.driverId = lap_times.driverId 
+GROUP BY lap_times.driverId
+ORDER BY MIN(lap_times.milliseconds) ASC;
 
 -- For each driver, find the constructor they have driven for most.
 CREATE TEMPORARY TABLE most_common_team AS
@@ -49,18 +50,21 @@ FROM (
     GROUP BY driverId, constructorId
 ) ranked_teams
 WHERE rank = 1;
-SELECT driver_details.forename || ' ' || driver_details.surname as driverName, team_details.name as teamName
+SELECT driver_details.forename || ' ' || driver_details.surname as driver_name, team_details.name as teamName
 FROM most_common_team
 LEFT JOIN driver_details ON driver_details.driverId = most_common_team.driverId
 LEFT JOIN team_details ON team_details.constructorId = most_common_team.constructorId;
 DROP TABLE most_common_team;
 
 -- On which circuit have the most fatalities occurred during a race?
-select ti.name, ti.location, ti.country, count(rr.statusId) as fatalities
-from track_information as ti
-join race_schedule as rs using(circuitId)
+select distinct 
+    c.name,
+    c.location,
+    c.country,
+    count(rr.statusId) over (partition by ti.name, ti.location, ti.country) as fatalities
+from circuits as c
+join race_schedule as rs on c.circuitId = rs.circuitId
 join race_results as rr on rs.raceId = rr.raceId
-join race_status as rst on rr.statusId = rst.statusId 
+join race_status as rst on rr.statusId = rst.statusId
 where rst.statusId = 104
-group by ti.name, ti.location, ti.country
 order by fatalities desc;
