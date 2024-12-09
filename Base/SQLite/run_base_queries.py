@@ -6,7 +6,7 @@ connection = sqlite3.connect("F1-Base.db")
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
-    "./Base_Queries.sql",
+    "../Base_Queries.sql",
     "r",
 ) as sql_file:
     queries = sql_file.read()

@@ -2,11 +2,11 @@ import sqlite3
 import pandas as pd
 import time
 
-connection = sqlite3.connect("F1-2NF.db")
+connection = sqlite3.connect("F1-Merged.db")
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
-    "./2NF_Queries.sql",
+    "../Merged_Queries.sql",
     "r",
 ) as sql_file:
     queries = sql_file.read()
@@ -24,7 +24,7 @@ for query in queries.split("\n\n"):
 
         runs.append(end_time - start_time)
 
-    query_times[query[: query.find("\n")]] = sum(runs)
+    query_times[query[: query.find("\n")]] = sum(runs)  # Avg = Sum * 1000 / 1000
 
 connection.close()
 
