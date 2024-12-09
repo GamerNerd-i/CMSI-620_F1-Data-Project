@@ -24,7 +24,7 @@ join race_schedule using(circuitId)
 group by ti.name
 order by num_of_races desc;
 
--- How many drivers are named Andrew?
+-- How many drivers are named Jim?
 select count(*) from driver_details where forename = 'Jim';
 
 -- ADVANCED QUERIES
@@ -56,11 +56,14 @@ LEFT JOIN team_details ON team_details.constructorId = most_common_team.construc
 DROP TABLE most_common_team;
 
 -- On which circuit have the most fatalities occurred during a race?
-select ti.name, ti.location, ti.country, count(rr.statusId) as fatalities
+select distinct 
+    ti.name,
+    ti.location,
+    ti.country,
+    count(rr.statusId) over (partition by ti.name, ti.location, ti.country) as fatalities
 from track_information as ti
 join race_schedule as rs using(circuitId)
 join race_results as rr on rs.raceId = rr.raceId
-join race_status as rst on rr.statusId = rst.statusId 
+join race_status as rst on rr.statusId = rst.statusId
 where rst.statusId = 104
-group by ti.name, ti.location, ti.country
 order by fatalities desc;

@@ -15,12 +15,16 @@ cursor = connection.cursor()
 query_times = {}
 
 for query in queries.split("\n\n"):
-    start_time = time.time()
-    cursor.executescript(query)
-    # print(cursor.fetchall())
-    end_time = time.time()
+    runs = []
+    for i in range(1000):
+        start_time = time.time()
+        cursor.executescript(query)
+        # print(cursor.fetchall())
+        end_time = time.time()
 
-    query_times[query[: query.find("\n")]] = (end_time - start_time) * 1000
+        runs.append(end_time - start_time)
+
+    query_times[query[: query.find("\n")]] = sum(runs)  # Avg = Sum * 1000 / 1000
 
 connection.close()
 
