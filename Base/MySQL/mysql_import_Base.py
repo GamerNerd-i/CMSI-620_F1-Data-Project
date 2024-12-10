@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-username = os.getenv("name")
+# username = os.getenv("name")
 password = os.getenv("password")
 database = os.getenv("db_name")
 
