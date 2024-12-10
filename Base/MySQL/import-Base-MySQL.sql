@@ -22,7 +22,7 @@
 -- Creating tables
 CREATE TABLE Base.constructor_performance (
 	constructorResultsId smallint,
-	raceId smallint ,
+	raceId smallint,
 	constructorId smallint,
 	points numeric,
 	status varchar,
