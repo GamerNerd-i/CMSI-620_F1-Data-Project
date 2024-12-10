@@ -35,19 +35,22 @@ REPLACE INTO TABLE Base.constructor_performance
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 IGNORE 1 LINES;
 
--- for tomorrow
+CREATE TABLE constructor_rankings (source
+	constructorStandingsId smallint,
+	raceId smallint,
+	constructorId smallint,
+	points numeric,
+	position smallint,
+	positionText varchar,
+	wins smallint,
+    PRIMARY KEY (constructorStandingsId)
+);
 
-
--- CREATE TABLE constructor_rankings (source
--- 	constructorStandingsId serial,
--- 	raceId smallint,
--- 	constructorId smallint,
--- 	points numeric,
--- 	position smallint,
--- 	positionText varchar,
--- 	wins smallint,
---     PRIMARY KEY (constructorStandingsId)
--- );
+-- https://dev.mysql.com/doc/refman/8.4/en/load-data.html
+LOAD DATA LOCAL INFILE "../Data/Constructor_Rankings.csv"
+REPLACE INTO TABLE Base.constructor_rankings
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+IGNORE 1 LINES;
 
 -- CREATE TABLE driver_details (
 -- 	driverId serial,

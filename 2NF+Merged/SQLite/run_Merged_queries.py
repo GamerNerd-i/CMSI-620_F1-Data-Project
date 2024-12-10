@@ -26,9 +26,9 @@ for query in queries.split("\n\n"):
 
         runs.append(end_time - start_time)
 
-    query_times[query[: query.find("\n")]] = (
-        sum(runs) / REPEAT
-    )  # Avg = Sum * 1000 / 1000
+    query_times[query[: query.find("\n")]] = sum(
+        runs
+    )  # * 1000 / REPEAT  # Avg = Sum * 1000 / 1000
 
 connection.close()
 
