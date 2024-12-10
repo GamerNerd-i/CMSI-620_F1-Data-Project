@@ -8,7 +8,7 @@ connection = sqlite3.connect("F1-Merged.db")
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
-    "../Merged_Queries.sql",
+    "./Queries/Merged_Queries.sql",
     "r",
 ) as sql_file:
     queries = sql_file.read()
