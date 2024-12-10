@@ -65,3 +65,24 @@ join race_status as rst on rr.statusId = rst.statusId
 where rst.statusId = 104
 group by ti.name, ti.location, li.country
 order by fatalities desc;
+
+-- Rank the average lap time of each F1 driver at each circuit during the year 2024 (which has the most races).
+CREATE TEMPORARY TABLE races AS
+SELECT race_schedule.raceId, race_schedule.circuitId, circuits.name
+FROM race_schedule
+JOIN (
+    SELECT circuitId, name
+    FROM circuits
+) circuits ON circuits.circuitId = race_schedule.circuitId
+WHERE race_schedule.raceDate LIKE '%2024';
+SELECT drivers.driverName, races.name, AVG(lap_times.milliseconds) / 1000 as avg_lap
+FROM races
+NATURAL LEFT JOIN lap_times
+JOIN (
+    SELECT driverId, forename || ' ' || surname as driverName
+    FROM driver_details
+) drivers ON drivers.driverId = lap_times.driverId
+WHERE lap_times.raceId IN (SELECT raceId FROM races)
+GROUP BY drivers.driverName, races.circuitId
+ORDER BY lap_times.driverId, avg_lap DESC;
+DROP TABLE races;

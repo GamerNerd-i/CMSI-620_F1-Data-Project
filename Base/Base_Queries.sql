@@ -78,13 +78,13 @@ JOIN (
 ) circuits ON circuits.circuitId = race_schedule.circuitId
 WHERE race_schedule.year = 2024;
 SELECT drivers.driverName, races.name, AVG(lap_timings.milliseconds) / 1000 as avg_lap
-FROM lap_timings
-RIGHT JOIN races
+FROM races
+NATURAL LEFT JOIN lap_timings
 JOIN (
     SELECT driverId, forename || ' ' || surname as driverName
     FROM driver_details
 ) drivers ON drivers.driverId = lap_timings.driverId
-WHERE lap_timings.raceId IN (SELECT raceId FROM races)
-GROUP BY drivers.driverName, races.circuitId
-ORDER BY avg_lap DESC;
+WHERE lap_timings.raceId IN (SELECT raceId from races)
+GROUP BY lap_timings.driverId, races.circuitId
+ORDER BY lap_timings.driverId, avg_lap DESC;
 DROP TABLE races;
