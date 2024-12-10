@@ -67,3 +67,6 @@ join race_results as rr on rs.raceId = rr.raceId
 join race_status as rst on rr.statusId = rst.statusId
 where rst.statusId = 104
 order by fatalities desc;
+
+-- Rank the average lap time of each F1 driver at each circuit during the year 2024 (which has the most races).
+SELECT raceId, circuitId from race_schedule where year = 2024;
