@@ -4,11 +4,11 @@ import time
 
 REPEAT = 1000
 
-connection = sqlite3.connect("F1-Base.db")
+connection = sqlite3.connect("./F1-3NF.db")
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
-    "../Base_Queries.sql",
+    "./3NF_Queries.sql",
     "r",
 ) as sql_file:
     queries = sql_file.read()
@@ -26,7 +26,9 @@ for query in queries.split("\n\n"):
 
         runs.append(end_time - start_time)
 
-    query_times[query[: query.find("\n")]] = sum(runs) / REPEAT
+    query_times[query[: query.find("\n")]] = (
+        sum(runs) / REPEAT
+    )  # Avg = Sum * 1000 / 1000
 
 connection.close()
 
