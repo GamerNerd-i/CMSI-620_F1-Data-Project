@@ -1,26 +1,26 @@
--- Importing data from Kaggle Dataset:
--- https://www.kaggle.com/datasets/muhammadehsan02/formula-1-world-championship-history-1950-2024?select=Sprint_Race_Results.csv
+-- -- Importing data from Kaggle Dataset:
+-- -- https://www.kaggle.com/datasets/muhammadehsan02/formula-1-world-championship-history-1950-2024?select=Sprint_Race_Results.csv
 
--- Hard reset used for testing
--- DROP TABLE IF EXISTS
--- 	circuits,
--- 	constructor_performance
--- 	constructors,
--- 	driver_details,
--- 	driver_rankings
--- 	lap_times,
--- 	pit_stops,
--- 	qualifying_results,
--- 	race_results
--- 	race_schedule,
--- 	season_summaries,
--- 	sessions,
--- 	sprint_results,
--- 	status
--- CASCADE;
+-- -- Hard reset used for testing
+DROP TABLE IF EXISTS
+	third.circuits,
+	third.constructor_performance,
+	third.constructors,
+	third.driver_details,
+	third.driver_rankings,
+	third.lap_times,
+	third.pit_stops,
+	third.qualifying_results,
+	third.race_results,
+	third.race_schedule,
+	third.season_summaries,
+	third.sessions,
+	third.sprint_results,
+	third.status
+CASCADE;
 
--- Creating tables
-CREATE TABLE constructor_performance (
+-- -- Creating tables
+CREATE TABLE third.constructor_performance (
 	raceId smallint,
 	constructorId smallint,
 	position smallint,
@@ -30,7 +30,7 @@ CREATE TABLE constructor_performance (
 	PRIMARY KEY (raceId, constructorId)
 );
 
-CREATE TABLE driver_details (
+CREATE TABLE third.driver_details (
 	driverId smallint PRIMARY KEY,
 	driverRef varchar,
 	number smallint,
@@ -42,7 +42,7 @@ CREATE TABLE driver_details (
 	url varchar
 );
 
-CREATE TABLE driver_rankings (
+CREATE TABLE third.driver_rankings (
 	raceId smallint,
 	driverId smallint,
 	pointsTotal numeric,
@@ -51,7 +51,7 @@ CREATE TABLE driver_rankings (
 	PRIMARY KEY (raceId, driverId)
 );
 
-CREATE TABLE lap_times (
+CREATE TABLE third.lap_times (
 	raceId smallint,
 	driverId smallint,
 	lap smallint,
@@ -61,7 +61,7 @@ CREATE TABLE lap_times (
 	PRIMARY KEY (raceId, driverId, lap)
 );
 
-CREATE TABLE pit_stops (
+CREATE TABLE third.pit_stops (
 	raceId smallint,
 	driverId smallint,
 	stop smallint,
@@ -72,15 +72,15 @@ CREATE TABLE pit_stops (
 	PRIMARY KEY (raceId, driverId, stop, lap)
 );
 
-CREATE TABLE qualifying_results (
+CREATE TABLE third.qualifying_results (
 	raceId smallint,
 	driverId smallint,
-	q interval,
 	qNumber smallint,
+	q interval,
 	PRIMARY KEY (raceId, driverId, qNumber)
 );
 
-CREATE TABLE race_results (
+CREATE TABLE third.race_results (
 	raceId smallint,
 	driverId smallint,
 	constructorId smallint,
@@ -100,7 +100,7 @@ CREATE TABLE race_results (
 	PRIMARY KEY (raceId, driverId, constructorId, grid, statusId)
 );
 
-CREATE TABLE race_schedule (
+CREATE TABLE third.race_schedule (
 	raceId smallint PRIMARY KEY,
     circuitId smallint,
 	round smallint,
@@ -110,7 +110,7 @@ CREATE TABLE race_schedule (
 	url varchar
 );
 
-CREATE TABLE sessions (
+CREATE TABLE third.sessions (
 	sessionId smallint PRIMARY KEY,
 	raceId smallint,
 	sessonDate date,
@@ -118,17 +118,17 @@ CREATE TABLE sessions (
 	sessionType varchar
 );
 
-CREATE TABLE status (
+CREATE TABLE third.status (
 	statusID smallint PRIMARY KEY,
 	status varchar
 );
 
-CREATE TABLE season_summaries (
+CREATE TABLE third.season_summaries (
 	year smallint PRIMARY KEY,
 	url varchar
 );
 
-CREATE TABLE sprint_results (
+CREATE TABLE third.sprint_results (
 	raceId smallint,
 	driverId smallint,
 	constructorId smallint,
@@ -146,7 +146,7 @@ CREATE TABLE sprint_results (
 	PRIMARY KEY (raceId, driverId)
 );
 
-CREATE TABLE constructors (
+CREATE TABLE third.constructors (
 	constructorId smallint PRIMARY KEY,
 	constructorRef varchar,
 	name varchar,
@@ -154,13 +154,18 @@ CREATE TABLE constructors (
 	url varchar
 );
 
-CREATE TABLE circuits (
+CREATE TABLE third.circuits (
 	circuitId smallint PRIMARY KEY,
 	name varchar,
 	location varchar,
-	country varchar,
 	lat numeric,
 	lng numeric,
 	alt smallint,
 	url varchar
+);
+
+CREATE TABLE third.locations (
+	location varchar,
+	country varchar,
+	PRIMARY KEY (location, country)
 );
