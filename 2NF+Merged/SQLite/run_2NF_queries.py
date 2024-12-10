@@ -2,11 +2,11 @@ import sqlite3
 import pandas as pd
 import time
 
-connection = sqlite3.connect("F1-2NF.db")
+connection = sqlite3.connect("./F1-2NF.db")
 
 # https://stackoverflow.com/questions/54289555/how-do-i-execute-an-sqlite-script-from-within-python
 with open(
-    "../2NF_Queries.sql",
+    "./Queries/2NF_Queries.sql",
     "r",
 ) as sql_file:
     queries = sql_file.read()

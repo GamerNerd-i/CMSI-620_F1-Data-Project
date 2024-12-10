@@ -19,10 +19,10 @@ ORDER BY podiums DESC
 LIMIT 1;
 
 -- Which circuit has held the most races?
-select c.name, count(circuitId) as num_of_races 
+select c.circuitName, count(circuitId) as num_of_races 
 from circuits as c
 join race_schedule using(circuitId)
-group by c.name
+group by c.circuitName
 order by num_of_races desc;
 
 -- How many drivers are named Andrew?
@@ -50,21 +50,21 @@ FROM (
     GROUP BY driverId, constructorId
 ) ranked_teams
 WHERE rank = 1;
-SELECT driver_details.forename || ' ' || driver_details.surname as driver_name, team_details.name as teamName
+SELECT driver_details.forename || ' ' || driver_details.surname as driver_name, constructors.name as teamName
 FROM most_common_team
 LEFT JOIN driver_details ON driver_details.driverId = most_common_team.driverId
-LEFT JOIN team_details ON team_details.constructorId = most_common_team.constructorId;
+LEFT JOIN constructors ON constructors.constructorId = most_common_team.constructorId;
 DROP TABLE most_common_team;
 
 -- On which circuit have the most fatalities occurred during a race?
 select distinct 
-    c.name,
+    c.circuitName,
     c.location,
     c.country,
-    count(rr.statusId) over (partition by ti.name, ti.location, ti.country) as fatalities
+    count(rr.statusId) over (partition by c.circuitName, c.location, c.country) as fatalities
 from circuits as c
 join race_schedule as rs on c.circuitId = rs.circuitId
 join race_results as rr on rs.raceId = rr.raceId
-join race_status as rst on rr.statusId = rst.statusId
+join status as rst on rr.statusId = rst.statusId
 where rst.statusId = 104
 order by fatalities desc;

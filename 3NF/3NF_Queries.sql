@@ -24,7 +24,7 @@ join race_schedule using(circuitId)
 group by ti.name
 order by num_of_races desc;
 
--- How many drivers are named Andrew?
+-- How many drivers are named Jim?
 select count(*) from driver_details where forename = 'Jim';
 
 -- ADVANCED QUERIES
