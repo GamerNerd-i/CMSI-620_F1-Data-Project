@@ -3,25 +3,25 @@ import time
 import os
 from sqlalchemy import create_engine, text
 
-REPEAT = 1000
+REPEAT = 10
 
 load_dotenv()
 
 password = os.getenv("password")
-database = os.getenv("db_name")
+database = os.getenv("db_name2")
 
 if not password or not database:
     raise ValueError("Missing database credentials. Check your .env file.")
 
 engine = create_engine(f"mysql+pymysql://ElScarab:{password}@localhost/{database}")
 
-with open("./Updated_Base_Queries_MySQL.sql", "r") as sql_file:
+with open("../Queries/2NF_Queries.sql", "r") as sql_file:
     queries = sql_file.read()
 
 query_times = {}
 
 for query in queries.split("\n\n"):
-    print(f"Executing query: {query} \n")
+    # print(f"Executing query: {query} \n")
     query = query.strip()
     if not query:
         continue
