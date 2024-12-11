@@ -27,6 +27,11 @@
 CREATE TABLE merged.lap_times AS
 SELECT * FROM
 	public.lap_times
+	NATURAL LEFT JOIN merged.race_inf 
+
+CREATE TABLE merged.full_race_results AS
+SELECT * FROM
+	merged.race_results
 	NATURAL LEFT JOIN merged.race_info;
 
 select * from merged.lap_times;
